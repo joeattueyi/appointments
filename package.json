@@ -4,11 +4,52 @@
   "description": "appointments",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-short": "jest --collectCoverage=false --reporters jest-silent-reporter",
+    "build": "webpack",
+    "build-server": "webpack --config webpack-server.config.js",
+    "test-server": "jest --config server/jest.json",
+    "serve": "node server/src/server.js",
+    "relay": "relay-compiler"
   },
   "author": "jattueyi@gmail.com",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^29.3.1"
+    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.18.6",
+    "@types/relay-runtime": "^14.1.5",
+    "babel-loader": "^9.1.0",
+    "babel-plugin-relay": "^14.1.0",
+    "expect-redux": "^5.0.3",
+    "graphql": "^16.6.0",
+    "jest": "^29.3.1",
+    "jest-environment-jsdom": "^29.3.1",
+    "react-test-renderer": "^18.2.0",
+    "relay-compiler": "^14.1.0",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.20.6",
+    "history": "^5.3.0",
+    "jest-silent-reporter": "^0.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-relay": "^14.1.0",
+    "react-router-dom": "^6.4.5",
+    "redux": "^4.2.0",
+    "redux-saga": "^1.2.2",
+    "relay-runtime": "^14.1.0",
+    "whatwg-fetch": "^3.6.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "printWidth": 67,
+    "jsxBracketSameLine": true
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   }
 }
