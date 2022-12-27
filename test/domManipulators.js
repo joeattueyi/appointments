@@ -55,6 +55,8 @@ export const createContainer = () => {
         await act(async () =>
             ReactTestUtils.Simulate[eventName](element, eventData)
         );
+    
+    const children = element => Array.from(element.childNodes);
 
     return {
         blur: simulateEvent('blur'),
@@ -68,6 +70,7 @@ export const createContainer = () => {
         labelFor,
         element,
         elements,
+        children,
         click: simulateEvent('click'),
         change: simulateEvent('change'),
         submit: simulateEventAndWait('submit'),

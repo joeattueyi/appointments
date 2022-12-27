@@ -1,15 +1,23 @@
-import express from 'express';
-import expressGraphql from 'express-graphql';
-import { buildSchema } from 'graphql';
-import { GraphQLError } from 'graphql';
-import { Appointments } from './appointments';
-import { Customers } from './customers';
-import morgan from 'morgan';
-import schemaText from '../../src/schema.graphql';
+const express = require('express');
+const expressGraphql =  require('express-graphql').graphqlHTTP;
+const  {GraphQLError, buildSchema} = require('graphql');
+const {Appointments} = require('./appointments');
+const {Customers} = require('./customers');
+const morgan = require('morgan');
+const fs = require('fs');
 
-const schema = buildSchema(schemaText);
+let data; 
+try {
+  data = fs.readFileSync('src/schema.graphql', 'utf8');
+  console.log(data);
+} catch (err) {
+  console.error(err);
+}
 
-export function buildApp(customerData, appointmentData, timeSlots) {
+
+const schema = buildSchema(data);
+
+module.exports.buildApp = function buildApp(customerData, appointmentData, timeSlots) {
   const app = express();
 
   const customers = new Customers(customerData);
@@ -54,6 +62,8 @@ export function buildApp(customerData, appointmentData, timeSlots) {
 
   app.get('/customers', (req, res, next) => {
     const results = customers.search(buildSearchParams(req.query));
+    console.log("req.query", req.query)
+    console.log("results", results)
     res.json(results);
   });
 

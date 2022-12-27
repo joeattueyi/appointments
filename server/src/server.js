@@ -1,6 +1,6 @@
-import { buildApp } from './app.js';
-import { generateFakeCustomers } from './customers';
-import { generateFakeAppointments, buildTimeSlots } from './appointments';
+const {buildApp} = require('./app');
+const {generateFakeCustomers} = require('./customers');
+const { generateFakeAppointments, buildTimeSlots} = require('./appointments')
 
 let port = process.env.PORT || 3000;
 let customers = generateFakeCustomers();

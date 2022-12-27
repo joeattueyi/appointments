@@ -15,7 +15,7 @@ Array.prototype.pickRandom = function() {
 const pickMany = (items, number) =>
   Array(number).fill(1).map(n => items.pickRandom());
 
-export function buildTimeSlots() {
+module.exports.buildTimeSlots = function buildTimeSlots() {
   const startDate = new Date();
   startDate.setFullYear(startDate.getFullYear() - 1);
   const startTime = startDate.setHours(9, 0, 0, 0);
@@ -33,7 +33,7 @@ function shouldFillTimeSlot() {
   return randomInt(3) < 2;
 };
 
-export function generateFakeAppointments(customers, timeSlots) {
+module.exports.generateFakeAppointments = function generateFakeAppointments(customers, timeSlots) {
   const appointments = [];
   timeSlots.forEach(timeSlot => {
     const stylist = timeSlot.stylists.pickRandom()
@@ -49,7 +49,7 @@ export function generateFakeAppointments(customers, timeSlots) {
   return appointments;
 }
 
-export class Appointments {
+module.exports.Appointments = class Appointments {
   constructor(initialAppointments = [], initialTimeSlots = []) {
     this.appointments = [];
     this.timeSlots = initialTimeSlots;

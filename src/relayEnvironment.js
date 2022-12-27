@@ -30,6 +30,6 @@ let environment = null;
 export const getEnvironment = () =>
     environment || 
     (environment = new Environment({
-        network: Network.create(),
+        network: Network.create(performFetch),
         store: new Store(new RecordSource())
     }));

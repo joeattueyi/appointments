@@ -1,102 +1,78 @@
-import React, { useState, useCallback } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useCallback } from 'react';
+import { Route, Link, Switch } from 'react-router-dom';
 import { AppointmentFormLoader } from './AppointmentFormLoader';
 import { AppointmentsDayViewLoader } from './AppointmentsDayViewLoader';
 import { CustomerForm } from './CustomerForm';
-import { CustomerSearch } from './CustomerSearch/CustomerSearch';
-import {  Route, Link, Switch } from 'react-router-dom';
 import { CustomerSearchRoute } from './CustomerSearchRoute';
-import { connect } from 'react-redux';
 import { CustomerHistory } from './CustomerHistory';
+import { connect } from 'react-redux';
 
 export const MainScreen = () => (
-    <React.Fragment>
-        <div className="button-bar" >
-            <Link to="/addCustomer" className="button">
-                Add customer and appointment
-            </Link>
-            <Link to="/searchCustomers" className="button">
-                Search customers
-            </Link>
-        </div>
-        <AppointmentsDayViewLoader />
-    </React.Fragment>
+  <React.Fragment>
+    <div className="button-bar">
+      <Link to="/addCustomer" className="button">
+        Add customer and appointment
+      </Link>
+      <Link to="/searchCustomers" className="button">
+        Search customers
+      </Link>
+    </div>
+    <AppointmentsDayViewLoader />
+  </React.Fragment>
 );
 
-
 export const App = ({ history, setCustomerForAppointment }) => {
-    const [view, setView] = useState('dayView');
+  const transitionToCustomerHistory = customer =>
+    history.push(`/customer/${customer.id}`);
 
-    //const [customer, setCustomer] = useState();
-    
-    const transitionToAddCustomer = useCallback(() => 
-        setView('addCustomer'),
-    []);
+  const searchActions = customer => (
+    <React.Fragment>
+      <button
+        role="button"
+        onClick={() => setCustomerForAppointment(customer)}>
+        Create appointment
+      </button>
+      <button
+        role="button"
+        onClick={() => transitionToCustomerHistory(customer)}>
+        View history
+      </button>
+    </React.Fragment>
+  );
 
-    const transitionToAddAppointment = customer => {
-        setCustomerForAppointment(customer);
-        history.push('/addAppointment');
-      };
-
-    const transitionToDayView = useCallback(
-        () => setView('dayView'),
-        []
-    );
-
-    const transitionToCustomerHistory = customer =>
-        history.push(`/customer/${customer.id}`);
-
-    const searchActions = customer => (
-        <React.Fragment>
-            <button 
-                role="button"
-                onClick={() => setCustomerForAppointment(customer)}>
-                Create appointment
-            </button>
-            <button
-                role="button"
-                onClick={() => transitionToCustomerHistory(customer)}>
-                View history
-            </button>
-        </React.Fragment>
-    )
-
-
-    return (
-        <Switch>
-            <Route path="/addCustomer" component={CustomerForm}/>
-            <Route 
-                path="/addAppointment"  
-                render={() => 
-                    <AppointmentFormLoader onSave={transitionToDayView}/>}
-            />
-            <Route 
-                path="/searchCustomers"
-                render={props => (
-                    <CustomerSearchRoute
-                        {...props}
-                        renderCustomerActions={searchActions}
-                    />
-                )}
-            />
-            <Route component={MainScreen} />
-            <Route 
-                path="/customer/:id" 
-                render={({ match }) => <CustomerHistory id={match.params.id} />}
-            />
-        </Switch>
-    );
+  return (
+    <Switch>
+      <Route path="/addCustomer" component={CustomerForm} />
+      <Route
+        path="/addAppointment"
+        render={() => <AppointmentFormLoader />}
+      />
+      <Route
+        path="/searchCustomers"
+        render={props => (
+          <CustomerSearchRoute
+            {...props}
+            renderCustomerActions={searchActions}
+          />
+        )}
+      />
+      <Route
+        path="/customer/:id"
+        render={({ match }) => <CustomerHistory id={match.params.id} />}
+      />
+      <Route component={MainScreen} />
+    </Switch>
+  );
 };
 
-
 const mapDispatchToProps = {
-    setCustomerForAppointment: customer => ({
-        type: 'SET_CUSTOMER_FOR_APPOINTMENT',
-        customer 
-    })
+  setCustomerForAppointment: customer => ({
+    type: 'CUSTOMER_SELECTED',
+    customer
+  })
 };
 
 export const ConnectedApp = connect(
-    null,
-    mapDispatchToProps
+  null,
+  mapDispatchToProps
 )(App);

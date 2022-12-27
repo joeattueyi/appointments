@@ -1,4 +1,4 @@
-import { name, phone } from 'faker';
+const { name, phone } = require('faker');
 
 Array.prototype.unique = function() {
   return this.filter(function (value, index, self) {
@@ -19,7 +19,7 @@ function generateFakeCustomer(id) {
   }
 }
 
-export function generateFakeCustomers() {
+module.exports.generateFakeCustomers = function generateFakeCustomers() {
   const customers = [];
   for(let i = 0; i < 1500; ++i) {
     customers.push(generateFakeCustomer(i));
@@ -27,7 +27,7 @@ export function generateFakeCustomers() {
   return customers;
 }
 
-export class Customers {
+module.exports.Customers = class Customers {
   constructor(initialCustomers = []) {
     this.customers = {};
     this.nextId = 0;

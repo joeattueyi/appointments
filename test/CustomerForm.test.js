@@ -1,7 +1,7 @@
 import React from 'react';
 import { createContainerWithStore, withEvent } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
-import { fetchResponseOk, fetchResponseError, fetchRequestBodyOf  } from './spyHelpers';
+import { fetchResponseOk, fetchResponseError, requestBodyOf  } from './spyHelpers';
 import 'whatwg-fetch';
 import ReactTestUtils, { act } from 'react-dom/test-utils';
 import { expectRedux } from 'expect-redux';
@@ -81,7 +81,7 @@ describe('CustomerForm', () => {
             await change(field('customer',fieldName), withEvent(fieldName, value));
             await submit(form('customer'));
 
-            expect(fetchRequestBodyOf(window.fetch)).toMatchObject({
+            expect(requestBodyOf(window.fetch)).toMatchObject({
                 [fieldName]: value
             });
         });
@@ -111,7 +111,7 @@ describe('CustomerForm', () => {
                   fetch={window.fetch.fn}
            /> );
            await submit(form('customer'));
-           expect(fetchRequestBodyOf(window.fetch)).toMatchObject({
+           expect(requestBodyOf(window.fetch)).toMatchObject({
             [fieldName]: value
             });
        });
